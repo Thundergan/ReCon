@@ -46,4 +46,4 @@ shift $((OPTIND-1))
 
 #echo "$USER_NAME ($USER_ID:$GROUP_ID) -> $TAG"
 
-docker build --build-arg UID=$USER_ID --build-arg GID=$GROUP_ID --build-arg USER_NAME=$UNAME -t remotecontrol:$TAG .
+docker build --build-arg UID=$USER_ID --build-arg GID=$GROUP_ID --build-arg USER_NAME=$UNAME -t recon:$TAG .
