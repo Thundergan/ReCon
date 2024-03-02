@@ -29,7 +29,7 @@ func main() {
 
 // Generates a string containing the explanation for the flags of this program.
 func generateHelp() string {
-	helpMessage := "-p <portnumber>\tListen to the given port. Defaults to 7411.\n"
+	helpMessage := "-p <portnumber>\tListen to the given port. Defaults to 8080.\n"
 	helpMessage += "-h\tPrints this help message.\n"
 	return helpMessage
 }
