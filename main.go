@@ -20,9 +20,6 @@ func main() {
 		return                    //and quit the program
 	}
 
-	// Initialize the app
-	config.InitApp("config/.env")
-
 	r := config.SetRoutes()
 	r.Run(":" + strconv.Itoa(port))
 }
