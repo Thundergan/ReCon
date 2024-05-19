@@ -1,33 +1,39 @@
-FROM golang:latest
+# Use the official Golang alpine image from the Docker Hub
+FROM golang:1.22-alpine
 
-# Set the username, uid and gid the docker container is run with
-ARG UNAME=recon
-ARG UID=1000
-ARG GID=1000
+# Arguments for username, UID, GID and port
+ARG USERNAME
+ARG UID
+ARG GID
+ARG PORT
 
-RUN groupadd -g $GID -o $UNAME
-RUN useradd -m -u $UID -g $GID -o $UNAME
-USER $UNAME
+# Install ssh
+RUN apk add --no-cache openssh-client
 
-# Set destination for COPY
-WORKDIR /app
+# Create a group and user
+RUN addgroup -g $GID $USERNAME && \
+    adduser -D -u $UID -G $USERNAME $USERNAME
 
-# Copy the dev dir to /app
-COPY . .
-# Download Go modules
-RUN go mod download
+# Set the working directory to the home directory of the user
+WORKDIR /home/$USERNAME
 
-# Build
-RUN make build
-ENV USER=root
+# Copy the local package files to the container's workspace.
+COPY . /home/$USERNAME
 
-# Optional:
-# To bind to a TCP port, runtime parameters must be supplied to the docker command.
-# But we can document in the Dockerfile what ports
-# the application is going to listen on by default.
-# https://docs.docker.com/engine/reference/builder/#expose
-EXPOSE 8080
+# Set Gin to release mode
+ENV GIN_MODE=release
 
-# Run
-CMD ["/bin/bash"]
-#CMD ["/recon/build/recon"]
+# Download dependencies
+RUN go mod tidy
+
+# Build the Go app
+RUN go build -o main .
+
+# Run the command as the specified user
+USER $USERNAME
+
+# Expose the application on the specified port
+EXPOSE $PORT
+
+# Run the Go app
+CMD ["./main"]

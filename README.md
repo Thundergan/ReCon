@@ -8,12 +8,12 @@ There is no security implemented at the moment! Use with caution!
 It is designed to be used in a docker container.
 
 ```bash
-docker build --tag recon:$USER .
+docker build --build-arg USERNAME=$(whoami) --build-arg UID=$(id -u) --build-arg GID=$(id -g) --build-arg PORT=8080 -t recon:$(whoami) .
 ```
 
 Start the container with
 ```bash
-docker run --user $UID:$GID --name recon -v /path/to/.ssh:/root/.ssh -p 8080:8080 recon:$USER
+docker run -v $HOME/.ssh:/home/$(whoami)/.ssh -p 8080:8080 -d recon:$(whoami)
 ```
 
 # Remote controll with recon
