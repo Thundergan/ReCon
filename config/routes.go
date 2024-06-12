@@ -20,7 +20,8 @@ func SetRoutes() *gin.Engine {
 	v1 := r.Group("/api/v1")
 	{
 		//Defines the GET route, full route is "/api/v1/exec"
-		v1.GET("/exec/:host", remoteController.Exec)
+		v1.GET("/exec/:host", remoteController.ExecRemote)
+		v1.GET("/exec", remoteController.ExecLocal)
 	}
 
 	//Returns the gin router a.k.a. Engine
