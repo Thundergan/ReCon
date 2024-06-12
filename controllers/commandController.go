@@ -15,7 +15,7 @@ type RemoteController struct {
 
 func (s RemoteController) ExecLocal(c *gin.Context) {
 	command := c.DefaultQuery("cmd", "")
-	cmd := exec.Command(command)
+	cmd := exec.Command("bash", "-c", command)
 	stderr, _ := cmd.StderrPipe()       //fetch the stderr in a pipline
 	stdout, _ := cmd.StdoutPipe()       //fetch the stdout in a pipline
 	if err := cmd.Start(); err != nil { //start the execution of the command and test for imediate errors //TODO what is if there is an error and a stdout?
